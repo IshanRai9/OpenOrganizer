@@ -2,21 +2,21 @@
   <img src="./public/logo.png" width="200" alt="OpenOrganizer Logo">
 </p>
 
-# 📂 OpenOrganizer
+# OpenOrganizer
 
 **OpenOrganizer** is a powerful, desktop-first file management application designed to automate the clutter-to-order workflow. Built with **Electron**, **React**, and **Vite**, it provides a sleek, glassmorphic interface to sort your files into logical folder structures based on smart presets and custom extension rules.
 
-## ✨ Features
+## Features
 
-- **🚀 Smart Presets**: One-click configuration for standard organization (Images, Docs, Videos, etc.).
-- **📂 Multi-Source Support**: Add multiple directories to scan and organize simultaneously.
-- **🔍 Deep Scanning**: Toggle subfolder scanning to pull files from nested structures.
-- **🎯 Precise Control**: Define custom exclusion lists to keep specific folders untouched.
-- **📍 Flexible Output**: Mode-based output control—organize into a single directory or per-tab locations.
-- **🎨 Glassmorphic UI**: A modern, premium interface with smooth animations and intuitive layout.
-- **💾 Auto-Save**: Your configuration and custom presets are automatically saved locally.
+- **Smart Presets**: One-click configuration for standard organization (Images, Docs, Videos, etc.).
+- **Multi-Source Support**: Add multiple directories to scan and organize simultaneously.
+- **Deep Scanning**: Toggle subfolder scanning to pull files from nested structures.
+- **Precise Control**: Define custom exclusion lists to keep specific folders untouched.
+- **Flexible Output**: Mode-based output control—organize into a single directory or per-tab locations.
+- **Glassmorphic UI**: A modern, premium interface with smooth animations and intuitive layout.
+- **Auto-Save**: Your configuration and custom presets are automatically saved locally.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [Electron](https://www.electronjs.org/)
 - **UI Architecture**: [React](https://react.dev/) + [Vite](https://vitejs.dev/)
@@ -24,7 +24,7 @@
 - **Styling**: Modern CSS with Glassmorphism and CSS Variables.
 - **Process Communication**: Electron IPC for secure file system access.
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -59,16 +59,15 @@ npm run build
 ```
 The output will be located in the `dist-electron/` directory.
 
-## 📝 Roadmap & TODO
+## Roadmap & TODO
 
 - [ ] **Home Page Default**: Make the landing page cleaner before a preset is chosen.
-- [ ] **Cloud Presets**: Sync your organization rules across devices.
-- [ ] **File Preview**: Quick preview of files before moving.
 - [ ] **Log View**: Detailed history of moved files.
+- [ ] **Organizing based on Subword**: Files with certain words in their name will be moved to the folder as desired by the user. 
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
-Built with ❤️ by [Ishan Rai](https://github.com/IshanRai9)
+Built by [Ishan Rai](https://github.com/IshanRai9)
