@@ -164,6 +164,11 @@ export default function App() {
       if (dir && !sourceDirs.some(d => d.path === dir)) {
         setSourceDirs([...sourceDirs, { path: dir, includeSubfolders: false, excludeDirs: [] }]);
       }
+    } else {
+      const dir = window.prompt("Enter a mock directory path (Web Demo Mode):", "C:\\Mock\\Source\\Folder");
+      if (dir && !sourceDirs.some(d => d.path === dir)) {
+        setSourceDirs([...sourceDirs, { path: dir, includeSubfolders: false, excludeDirs: [] }]);
+      }
     }
   };
 
@@ -190,6 +195,17 @@ export default function App() {
           return d;
         }));
       }
+    } else {
+      const dir = window.prompt("Enter a mock directory path to exclude (Web Demo Mode):", "C:\\Mock\\Excluded\\Folder");
+      if (dir) {
+        setSourceDirs(sourceDirs.map(d => {
+          if (d.path === dirPath) {
+             const newExcludes = Array.from(new Set([...d.excludeDirs, dir]));
+             return { ...d, excludeDirs: newExcludes };
+          }
+          return d;
+        }));
+      }
     }
   };
 
@@ -207,12 +223,21 @@ export default function App() {
     if (window.electronAPI) {
       const dir = await window.electronAPI.selectDirectory();
       if (dir) setOutputBaseDir(dir);
+    } else {
+      const dir = window.prompt("Enter a mock output directory path (Web Demo Mode):", "C:\\Mock\\Output\\Folder");
+      if (dir) setOutputBaseDir(dir);
     }
   };
 
   const handleSelectTabOutputDir = async (tabId) => {
     if (window.electronAPI) {
       const dir = await window.electronAPI.selectDirectory();
+      if (dir) {
+        setTabs(tabs.map(t => t.id === tabId ? { ...t, outputDir: dir } : t));
+        setActivePresetId(null);
+      }
+    } else {
+      const dir = window.prompt("Enter a mock output directory path for this tab (Web Demo Mode):", "C:\\Mock\\Output\\" + (tabs.find(t => t.id === tabId)?.name || 'Folder'));
       if (dir) {
         setTabs(tabs.map(t => t.id === tabId ? { ...t, outputDir: dir } : t));
         setActivePresetId(null);
@@ -243,6 +268,11 @@ export default function App() {
   };
 
   const handleOrganize = async () => {
+    if (!window.electronAPI) {
+      window.alert("Web Demo Mode doesn't have access to your local file system.\n\nDownload the Windows app from GitHub Releases to completely automate and organize your real files!");
+      return;
+    }
+
     if (sourceDirs.length === 0) {
       setStatusMsg("Please add at least one source directory.");
       return;
