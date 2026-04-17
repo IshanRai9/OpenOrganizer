@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FolderUp, Plus, X, Folder, AlertTriangle, Settings2, Play, Check, BookmarkMinus, Target, CheckSquare, Save, Trash2, FolderOpen, AlertCircle, Home, MapPin, Layers, ChevronDown, ChevronRight } from 'lucide-react';
 import './index.css';
+import gitIcon from './assets/git.png';
 
 const COMMON_EXTENSIONS = [
   '.jpg', '.jpeg', '.png', '.bmp', '.webp', '.svg', '.tiff', '.heic', '.heif',
@@ -456,8 +457,11 @@ export default function App() {
       <div className="main-content">
         <div className="titlebar-spacer"></div>
         
-        <header>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h1>OpenOrganizer</h1>
+          <a href="https://github.com/IshanRai9/OpenOrganizer" target="_blank" rel="noopener noreferrer" className="github-button">
+            <img src={gitIcon} alt="GitHub" />
+          </a>
         </header>
 
         {/* Source Directories */}

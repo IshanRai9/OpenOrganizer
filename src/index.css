@@ -656,3 +656,31 @@ h1 {
   margin-bottom: 4px;
 }
 
+.github-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgb(255, 255, 255);
+  border: 1px solid var(--panel-border);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.github-button img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+  transition: 0.2s ease;
+}
+
+.github-button:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.github-button:hover img {
+  opacity: 1;
+}
