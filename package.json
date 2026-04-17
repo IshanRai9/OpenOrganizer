@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "concurrently \"vite --force\" \"cross-env NODE_ENV=development wait-on tcp:5173 && electron .\"",
     "build": "vite build && electron-builder",
+    "vercel-build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

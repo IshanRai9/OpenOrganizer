@@ -65,6 +65,11 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTabId, setEditingTabId] = useState(null);
   const [customExt, setCustomExt] = useState('');
+  
+  const [isPresetModalOpen, setIsPresetModalOpen] = useState(false);
+  const [presetNameInput, setPresetNameInput] = useState('');
+  
+  const [presetToDelete, setPresetToDelete] = useState(null);
 
   // Status state
   const [isOrganizing, setIsOrganizing] = useState(false);
@@ -346,12 +351,17 @@ export default function App() {
   };
 
   const handleSaveAsPreset = () => {
-     const name = prompt("Enter a name for this preset:");
-     if (!name) return;
+     setPresetNameInput('');
+     setIsPresetModalOpen(true);
+  };
+
+  const confirmSavePreset = () => {
+     if (!presetNameInput.trim()) return;
+     setIsPresetModalOpen(false);
      
      const newPreset = {
         id: `preset-${Date.now()}`,
-        name,
+        name: presetNameInput.trim(),
         tabs: JSON.parse(JSON.stringify(tabs))
      };
      const newPresets = [...presets, newPreset];
@@ -363,11 +373,18 @@ export default function App() {
   const deletePreset = (e, id) => {
      e.stopPropagation();
      if (id === 'default-preset') return;
-     if (!confirm("Are you sure you want to delete this preset?")) return;
-     const newPresets = presets.filter(p => p.id !== id);
+     
+     const currentPreset = presets.find(p => p.id === id);
+     if (currentPreset) setPresetToDelete(currentPreset);
+  };
+  
+  const confirmDeletePreset = () => {
+     if (!presetToDelete) return;
+     const newPresets = presets.filter(p => p.id !== presetToDelete.id);
      setPresets(newPresets);
-     if (activePresetId === id) setActivePresetId(null);
+     if (activePresetId === presetToDelete.id) setActivePresetId(null);
      if (window.electronAPI) window.electronAPI.savePresets(newPresets);
+     setPresetToDelete(null);
   };
 
   return (
@@ -629,6 +646,64 @@ export default function App() {
           </button>
         </footer>
       </div>
+
+      {/* Preset Name Modal */}
+      {isPresetModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsPresetModalOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px' }}>
+            <div className="modal-header">
+              Save Preset
+              <button className="btn-secondary" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'white' }} onClick={() => setIsPresetModalOpen(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="modal-body" style={{ padding: '20px' }}>
+              <div className="input-group">
+                <label className="input-label">Preset Name</label>
+                <input 
+                  type="text" 
+                  className="text-input" 
+                  autoFocus
+                  placeholder="e.g., My Audio Layout"
+                  value={presetNameInput}
+                  onChange={e => setPresetNameInput(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') confirmSavePreset();
+                    if (e.key === 'Escape') setIsPresetModalOpen(false);
+                  }}
+                />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '16px' }}>
+                <button className="btn btn-secondary" onClick={() => setIsPresetModalOpen(false)}>Cancel</button>
+                <button className="btn" style={{ background: 'var(--accent-color)' }} onClick={confirmSavePreset}>Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Preset Confirm Modal */}
+      {presetToDelete && (
+        <div className="modal-overlay" onClick={() => setPresetToDelete(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px' }}>
+            <div className="modal-header" style={{ borderBottomColor: 'var(--danger-color)', color: 'var(--danger-color)' }}>
+              Delete Preset
+              <button className="btn-secondary" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--danger-color)' }} onClick={() => setPresetToDelete(null)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="modal-body" style={{ padding: '20px' }}>
+              <p style={{ margin: '0 0 20px 0', fontSize: '14px', lineHeight: '1.5' }}>
+                Are you sure you want to delete the preset <strong>"{presetToDelete.name}"</strong>? This action cannot be undone.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                <button className="btn btn-secondary" onClick={() => setPresetToDelete(null)}>Cancel</button>
+                <button className="btn" style={{ background: 'var(--danger-color)' }} onClick={confirmDeletePreset}>Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Extension Selection Modal */}
       {isModalOpen && (
